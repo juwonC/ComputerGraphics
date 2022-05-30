@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "D2DFramework.h"
+#include "BitmapPractice.h"
 
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
@@ -11,7 +11,7 @@ int WINAPI WinMain(
 
 	try
 	{
-		D2DFramework myFramework;
+		BitmapPractice myFramework;
 
 
 		myFramework.Initialize(hInstance);
