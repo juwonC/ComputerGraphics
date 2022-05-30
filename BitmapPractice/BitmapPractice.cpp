@@ -22,7 +22,41 @@ void BitmapPractice::Render()
 	mspRenderTarget->BeginDraw();
 	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
+	ClearBuffer(D2D1::ColorF(D2D1::ColorF::Green));
+	PresentBuffer();
+
 	mspRenderTarget->DrawBitmap(mspFrameBitmap.Get());
 
 	mspRenderTarget->EndDraw();
+}
+
+void BitmapPractice::PresentBuffer()
+{
+	mspFrameBitmap->CopyFromMemory(
+		nullptr,
+		&mspBakcBuffer[0],
+		BITMAP_WIDTH * BITMAP_BYTECOUNT
+	);
+}
+
+void BitmapPractice::DrawPixelToBuffer(int x, int y, D2D1::ColorF color)
+{
+	int pitch = BITMAP_WIDTH * BITMAP_BYTECOUNT;
+	int index = x * BITMAP_BYTECOUNT + y * pitch;
+
+	mspBakcBuffer[index] = static_cast<UINT8>(color.r * 255);
+	mspBakcBuffer[index + 1] = static_cast<UINT8>(color.g * 255);
+	mspBakcBuffer[index + 2] = static_cast<UINT8>(color.b * 255);
+	mspBakcBuffer[index + 3] = static_cast<UINT8>(color.a * 255);
+}
+
+void BitmapPractice::ClearBuffer(D2D1::ColorF color)
+{
+	for (int x = 0; x < BITMAP_WIDTH; x++)
+	{
+		for (int y = 0; y < BITMAP_HEIGHT; y++)
+		{
+			DrawPixelToBuffer(x, y, color);
+		}
+	}
 }

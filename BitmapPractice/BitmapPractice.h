@@ -17,5 +17,9 @@ public:
 		UINT width = 1024,
 		UINT height = 768) override;
 	void Render() override;
+
+	void PresentBuffer();
+	void DrawPixelToBuffer(int x, int y, D2D1::ColorF color);
+	void ClearBuffer(D2D1::ColorF color);
 };
 
