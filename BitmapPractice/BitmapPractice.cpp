@@ -22,7 +22,10 @@ void BitmapPractice::Render()
 	mspRenderTarget->BeginDraw();
 	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
-	ClearBuffer(D2D1::ColorF(D2D1::ColorF::Green));
+	ClearBuffer(D2D1::ColorF(D2D1::ColorF::Black));
+
+	DrawPixelToBuffer(10, 10, D2D1::ColorF::White);
+
 	PresentBuffer();
 
 	mspRenderTarget->DrawBitmap(mspFrameBitmap.Get());
@@ -52,11 +55,22 @@ void BitmapPractice::DrawPixelToBuffer(int x, int y, D2D1::ColorF color)
 
 void BitmapPractice::ClearBuffer(D2D1::ColorF color)
 {
-	for (int x = 0; x < BITMAP_WIDTH; x++)
+	//for (int x = 0; x < BITMAP_WIDTH; x++)
+	//{
+	//	for (int y = 0; y < BITMAP_HEIGHT; y++)
+	//	{
+	//		DrawPixelToBuffer(x, y, color);
+	//	}
+	//}
+
+	UINT8* pCurrent = &mspBakcBuffer[0];
+	for (int i = 0; i < BITMAP_WIDTH * BITMAP_HEIGHT; ++i)
 	{
-		for (int y = 0; y < BITMAP_HEIGHT; y++)
-		{
-			DrawPixelToBuffer(x, y, color);
-		}
+		*pCurrent = static_cast<UINT8>(color.r * 255);
+		*(pCurrent + 1)= static_cast<UINT8>(color.g * 255);
+		*(pCurrent + 2) = static_cast<UINT8>(color.b * 255);
+		*(pCurrent + 3) = static_cast<UINT8>(color.a * 255);
+
+		pCurrent += BITMAP_BYTECOUNT;
 	}
 }
