@@ -22,11 +22,13 @@ void BitmapPractice::Render()
 	mspRenderTarget->BeginDraw();
 	mspRenderTarget->Clear(D2D1::ColorF(0.0f, 0.2f, 0.4f, 1.0f));
 
-	ClearBuffer(D2D1::ColorF(D2D1::ColorF::LightCoral));
+	ClearBuffer(D2D1::ColorF(D2D1::ColorF::Black));
 
 	//DrawPixelToBuffer(10, 10, D2D1::ColorF::White);
 	FillRectToBuffer(0, 0, 100, 100, D2D1::ColorF::Green);
 	FillRectToBuffer(50, 50, 100, 100, D2D1::ColorF(1, 0, 0, 0.5f));
+	DrawCircleToBuffer(50, 300, 50, D2D1::ColorF::Green);
+	DrawLineToBuffer(300, 300, 0, 400, D2D1::ColorF::Green);
 
 	PresentBuffer();
 
@@ -91,6 +93,59 @@ void BitmapPractice::FillRectToBuffer(int left, int top, int width, int height, 
 		for (int y = 0; y < height; ++y)
 		{
 			DrawPixelToBuffer(x + left, y + top, color);
+		}
+	}
+}
+
+void BitmapPractice::DrawCircleToBuffer(int x, int y, int radius, D2D1::ColorF color)
+{
+	const double pi{ 3.141592 };
+
+	for (int angle = 0; angle < 180; ++angle)
+	{
+		int x1 = cos(angle / static_cast<int>(pi)) * radius;
+		int y1 = sin(angle / static_cast<int>(pi)) * radius;
+
+		DrawPixelToBuffer(x + x1, y + y1, color);
+	}
+}
+
+void BitmapPractice::DrawLineToBuffer(int x1, int y1, int x2, int y2, D2D1::ColorF color)
+{
+	int dx{ x2 - x1 };
+	int dy{ y2 - y1 };
+
+	if (dx == 0 && dy == 0)
+	{
+		return;
+	}
+
+	int increase{};
+
+	if (abs(dx) > abs(dy))
+	{
+		increase = (dx < 0) ? -1 : 1;
+
+		int y{};
+
+		for (int x = x1; x != x2; x += increase)
+		{
+			int y = dy / dx * (x - x1) + y1;
+
+			DrawPixelToBuffer(x, y, color);
+		}
+	}
+	else
+	{
+		increase = (dy < 0) ? -1 : 1;
+		
+		int x{};
+
+		for (int y = y1; y != y2; y += increase)
+		{
+			int x = dx / dy * (y - y1) + x1;
+
+			DrawPixelToBuffer(x, y, color);
 		}
 	}
 }
