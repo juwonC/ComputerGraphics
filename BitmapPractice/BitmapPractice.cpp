@@ -24,7 +24,8 @@ void BitmapPractice::Render()
 
 	ClearBuffer(D2D1::ColorF(D2D1::ColorF::Black));
 
-	DrawPixelToBuffer(10, 10, D2D1::ColorF::White);
+	//DrawPixelToBuffer(10, 10, D2D1::ColorF::White);
+	FillRectToBuffer(10, 10, 100, 100, D2D1::ColorF::Green);
 
 	PresentBuffer();
 
@@ -72,5 +73,16 @@ void BitmapPractice::ClearBuffer(D2D1::ColorF color)
 		*(pCurrent + 3) = static_cast<UINT8>(color.a * 255);
 
 		pCurrent += BITMAP_BYTECOUNT;
+	}
+}
+
+void BitmapPractice::FillRectToBuffer(int left, int top, int width, int height, D2D1::ColorF color)
+{
+	for (int x = 0; x < width; ++x)
+	{
+		for (int y = 0; y < height; ++y)
+		{
+			DrawPixelToBuffer(x + left, y + top, color);
+		}
 	}
 }
