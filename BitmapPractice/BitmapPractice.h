@@ -9,7 +9,7 @@ class BitmapPractice : public D2DFramework
 {
 private:
 	Microsoft::WRL::ComPtr<ID2D1Bitmap> mspFrameBitmap{};
-	std::unique_ptr<UINT8[]> mspBakcBuffer;
+	std::unique_ptr<UINT8[]> mspBackBuffer;
 
 public:
 	virtual void Initialize(HINSTANCE hInstance,

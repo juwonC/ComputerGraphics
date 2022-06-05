@@ -4,7 +4,7 @@ void BitmapPractice::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
 {
 	D2DFramework::Initialize(hInstance, title, width, height);
 
-	mspBakcBuffer = std::make_unique<UINT8[]>(
+	mspBackBuffer = std::make_unique<UINT8[]>(
 			BITMAP_WIDTH * BITMAP_HEIGHT * BITMAP_BYTECOUNT
 		);
 
@@ -41,7 +41,7 @@ void BitmapPractice::PresentBuffer()
 {
 	mspFrameBitmap->CopyFromMemory(
 		nullptr,
-		&mspBakcBuffer[0],
+		&mspBackBuffer[0],
 		BITMAP_WIDTH * BITMAP_BYTECOUNT
 	);
 }
@@ -58,10 +58,10 @@ void BitmapPractice::DrawPixelToBuffer(int x, int y, D2D1::ColorF color)
 	UINT8 b = static_cast<UINT8>(color.b * 255);
 	UINT8 a = static_cast<UINT8>(color.a * 255);
 
-	mspBakcBuffer[index]		= static_cast<UINT8>(mspBakcBuffer[index] * inverse + r * color.a);
-	mspBakcBuffer[index + 1]	= static_cast<UINT8>(mspBakcBuffer[index + 1] * inverse + g * color.a);
-	mspBakcBuffer[index + 2]	= static_cast<UINT8>(mspBakcBuffer[index + 2] * inverse + b * color.a);
-	mspBakcBuffer[index + 3]	= 255;
+	mspBackBuffer[index]		= static_cast<UINT8>(mspBackBuffer[index] * inverse + r * color.a);
+	mspBackBuffer[index + 1]	= static_cast<UINT8>(mspBackBuffer[index + 1] * inverse + g * color.a);
+	mspBackBuffer[index + 2]	= static_cast<UINT8>(mspBackBuffer[index + 2] * inverse + b * color.a);
+	mspBackBuffer[index + 3]	= 255;
 }
 
 void BitmapPractice::ClearBuffer(D2D1::ColorF color)
@@ -74,7 +74,7 @@ void BitmapPractice::ClearBuffer(D2D1::ColorF color)
 	//	}
 	//}
 
-	UINT8* pCurrent = &mspBakcBuffer[0];
+	UINT8* pCurrent = &mspBackBuffer[0];
 	for (int i = 0; i < BITMAP_WIDTH * BITMAP_HEIGHT; ++i)
 	{
 		*pCurrent = static_cast<UINT8>(color.r * 255);
